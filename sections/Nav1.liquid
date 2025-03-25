@@ -1,0 +1,200 @@
+<!-- ============================================ -->
+<!--          Floating Navigation Bar             -->
+<!-- ============================================ -->
+
+<header id="cs-navigation">
+    <div class="cs-container">
+        <!--Nav Logo-->
+        <a href="/" class="cs-logo" aria-label="Back to Home">
+            <img src="{{ settings.logo | img_url: '210x' }}" alt="logo" width="210" height="29" decoding="async">
+        </a>
+
+        <!--Navigation List-->
+        <nav class="cs-nav" role="navigation">
+            <!--Mobile Nav Toggle-->
+            <button class="cs-toggle" aria-label="Mobile Menu Toggle">
+                <div class="cs-box">
+                    <span class="cs-line cs-line1"></span>
+                    <span class="cs-line cs-line2"></span>
+                    <span class="cs-line cs-line3"></span>
+                </div>
+            </button>
+
+            <!-- Mobile Menu -->
+            <div class="cs-ul-wrapper">
+                <ul id="cs-expanded" class="cs-ul" aria-expanded="false">
+                    {% for link in linklists[settings.main_menu].links %}
+                        <li class="cs-li">
+                            <a href="{{ link.url }}" class="cs-li-link {% if link.active %}cs-active{% endif %}">
+                                {{ link.title }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Call-to-Action Button -->
+        <a href="{{ settings.nav_button_link }}" class="cs-button-solid cs-nav-button">
+            {{ settings.nav_button_text }}
+        </a>
+    </div>
+</header>
+
+<!-- ======================================= -->
+<!--               CSS Styles                -->
+<!-- ======================================= -->
+{% style %}
+  /* Floating Header */
+  #cs-navigation {
+    width: 100%;
+    padding: 0.8rem 1.5rem;
+    background: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10000;
+    transition: background 0.3s ease-in-out;
+  }
+
+  /* Navigation Container */
+  .cs-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1280px;
+    margin: auto;
+  }
+
+  /* Mobile Toggle */
+  .cs-toggle {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    display: none; /* Hidden on desktop */
+  }
+
+  /* Mobile Navigation */
+  @media (max-width: 768px) {
+    .cs-toggle {
+      display: block;
+    }
+
+    .cs-ul-wrapper {
+      display: none;
+      position: absolute;
+      top: 60px;
+      left: 0;
+      width: 100%;
+      background: #fff;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    .cs-active .cs-ul-wrapper {
+      display: block;
+    }
+  }
+
+  /* Navigation Links */
+  .cs-ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .cs-li {
+    list-style: none;
+  }
+
+  .cs-li-link {
+    text-decoration: none;
+    font-size: 1rem;
+    color: #333;
+    transition: color 0.3s ease-in-out;
+  }
+
+  .cs-li-link:hover {
+    color: var(--primary);
+  }
+
+  /* Button */
+  .cs-button-solid {
+    padding: 10px 20px;
+    background: var(--primary);
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: 0.3s;
+  }
+
+  .cs-button-solid:hover {
+    background: #d94a2e;
+  }
+{% endstyle %}
+
+<!-- ======================================= -->
+<!--         JavaScript for Mobile Nav       -->
+<!-- ======================================= -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+      var CSbody = document.querySelector('body');
+      const CSnavbarMenu = document.querySelector('#cs-navigation');
+      const CShamburgerMenu = document.querySelector('#cs-navigation .cs-toggle');
+
+      CShamburgerMenu.addEventListener('click', function () {
+          CShamburgerMenu.classList.toggle('cs-active');
+          CSnavbarMenu.classList.toggle('cs-active');
+          CSbody.classList.toggle('cs-open');
+          ariaExpanded();
+      });
+
+      function ariaExpanded() {
+          const csUL = document.querySelector('#cs-expanded');
+          const csExpanded = csUL.getAttribute('aria-expanded');
+
+          if (csExpanded === 'false') {
+              csUL.setAttribute('aria-expanded', 'true');
+          } else {
+              csUL.setAttribute('aria-expanded', 'false');
+          }
+      }
+  });
+</script>
+
+<!-- ======================================= -->
+<!--        Shopify Schema for Editor       -->
+<!-- ======================================= -->
+{% schema %}
+{
+  "name": "Floating Navigation",
+  "class": "cs-navigation",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "main_menu",
+      "label": "Main Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "text",
+      "id": "nav_button_text",
+      "label": "Navigation Button Text",
+      "default": "Get Started"
+    },
+    {
+      "type": "url",
+      "id": "nav_button_link",
+      "label": "Navigation Button Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Floating Navigation"
+    }
+  ]
+}
+{% endschema %}

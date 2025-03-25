@@ -1,0 +1,184 @@
+{{ 'custom-nav-bar.css' | asset_url | stylesheet_tag }}
+
+<header class="navbar section-{{ section.id }}-padding">
+  <div class="page-width navbar-container">
+    <a href="{{ section.settings.logo_link }}" class="navbar-logo">
+      {%- if section.settings.logo != blank -%}
+        <img src="{{ section.settings.logo | image_url: width: 200 }}" alt="Logo">
+      {%- else -%}
+        {{ section.settings.logo_text }}
+      {%- endif -%}
+    </a>
+
+    <nav class="navbar-links">
+      {%- for block in section.blocks -%}
+        <a 
+          href="{{ block.settings.nav_link }}" 
+          class="nav-item {% if block.settings.is_bold %}nav-item-bold{% endif %}"
+          {% if block.settings.open_new_tab %}target="_blank"{% endif %}
+        >
+          {{ block.settings.nav_label }}
+        </a>
+      {%- endfor -%}
+    </nav>
+
+    {%- if section.settings.show_button -%}
+      <a href="{{ section.settings.button_link }}" class="navbar-button">
+        {{ section.settings.button_text }}
+      </a>
+    {%- endif -%}
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Custom Nav Bar",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "text",
+      "id": "logo_text",
+      "label": "Logo Text (if no image)",
+      "default": "Your Logo"
+    },
+    {
+      "type": "url",
+      "id": "logo_link",
+      "label": "Logo Link",
+      "default": "/"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_button",
+      "default": true,
+      "label": "Show Button"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Buy Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link",
+      "default": "/"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "nav_link",
+      "name": "Navigation Link",
+      "settings": [
+        {
+          "type": "text",
+          "id": "nav_label",
+          "label": "Label",
+          "default": "New Link"
+        },
+        {
+          "type": "url",
+          "id": "nav_link",
+          "label": "Link",
+          "default": "/"
+        },
+        {
+          "type": "checkbox",
+          "id": "is_bold",
+          "label": "Bold Text",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "open_new_tab",
+          "label": "Open in New Tab",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Nav Bar",
+      "blocks": [
+        {
+          "type": "nav_link",
+          "settings": {
+            "nav_label": "Home",
+            "nav_link": "/"
+          }
+        },
+        {
+          "type": "nav_link",
+          "settings": {
+            "nav_label": "Pricing",
+            "nav_link": "/pricing"
+          }
+        },
+        {
+          "type": "nav_link",
+          "settings": {
+            "nav_label": "Marketplace",
+            "nav_link": "/marketplace"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+.navbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 0;
+  background: white;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+}
+.navbar-logo img {
+  max-height: 40px;
+}
+.navbar-links {
+  display: flex;
+  gap: 20px;
+}
+.nav-item {
+  font-size: 16px;
+  text-decoration: none;
+  color: #333;
+  transition: color 0.3s ease;
+}
+.nav-item:hover {
+  color: #0171EB;
+}
+.nav-item-bold {
+  font-weight: bold;
+}
+.navbar-button {
+  background: #0171EB;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+.navbar-button:hover {
+  background: #005BBB;
+}
+{% endstylesheet %}

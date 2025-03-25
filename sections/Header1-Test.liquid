@@ -1,0 +1,209 @@
+{{ 'pricing-table.css' | asset_url | stylesheet_tag }}
+
+<div class="pricing-section section-{{ section.id }}-padding">
+  <div class="page-width">
+    <div class="pricing-header">
+      <h2 class="pricing-title">{{ section.settings.heading }}</h2>
+      <p class="pricing-description">{{ section.settings.description }}</p>
+    </div>
+
+    <div class="pricing-grid">
+      {%- for block in section.blocks -%}
+        <div class="pricing-card {% if block.settings.recommended %}pricing-card--highlighted{% endif %}">
+          <h3 class="pricing-plan-title">{{ block.settings.plan_name }}</h3>
+          <p class="pricing-price">
+            <span class="pricing-symbol">{{ block.settings.currency_symbol }}</span>{{ block.settings.price }}
+            <span class="pricing-unit">/ {{ block.settings.price_unit }}</span>
+          </p>
+          <ul class="pricing-features">
+            {%- for feature in block.settings.features_list -%}
+              <li>✔ {{ feature }}</li>
+            {%- endfor -%}
+          </ul>
+          <a href="{{ block.settings.button_link }}" class="pricing-button">
+            {{ block.settings.button_text }}
+          </a>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Pricing Table",
+  "tag": "section",
+  "class": "section",
+  "max_blocks": 5,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "Choose Your Plan",
+      "label": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "description",
+      "default": "Flexible and affordable pricing plans for every business.",
+      "label": "Description"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "plan",
+      "name": "Plan",
+      "settings": [
+        {
+          "type": "text",
+          "id": "plan_name",
+          "default": "Basic",
+          "label": "Plan Name"
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "default": "10",
+          "label": "Price"
+        },
+        {
+          "type": "text",
+          "id": "currency_symbol",
+          "default": "$",
+          "label": "Currency Symbol"
+        },
+        {
+          "type": "text",
+          "id": "price_unit",
+          "default": "month",
+          "label": "Billing Unit (month/year)"
+        },
+        {
+          "type": "textarea",
+          "id": "features_list",
+          "default": "10 users included\n2GB storage\nEmail support",
+          "label": "Features (One per line)"
+        },
+        {
+          "type": "checkbox",
+          "id": "recommended",
+          "default": false,
+          "label": "Mark as Recommended"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "default": "Choose Plan",
+          "label": "Button Text"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Pricing Table",
+      "blocks": [
+        {
+          "type": "plan",
+          "settings": {
+            "plan_name": "Free",
+            "price": "0",
+            "currency_symbol": "$",
+            "price_unit": "month",
+            "features_list": "10 users included\n2GB storage\nEmail support",
+            "recommended": false,
+            "button_text": "Get Started",
+            "button_link": "/"
+          }
+        },
+        {
+          "type": "plan",
+          "settings": {
+            "plan_name": "Pro",
+            "price": "10",
+            "currency_symbol": "$",
+            "price_unit": "month",
+            "features_list": "50 users included\n10GB storage\nPriority Email support",
+            "recommended": true,
+            "button_text": "Upgrade Now",
+            "button_link": "/"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+.pricing-section {
+  text-align: center;
+  padding: 50px 0;
+}
+.pricing-title {
+  font-size: 2rem;
+  font-weight: bold;
+}
+.pricing-description {
+  font-size: 1.2rem;
+  color: #555;
+}
+.pricing-grid {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.pricing-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  max-width: 300px;
+  text-align: center;
+  background: #fff;
+}
+.pricing-card--highlighted {
+  border-color: #0171EB;
+  background: #f5f9ff;
+}
+.pricing-plan-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.pricing-price {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #0171EB;
+}
+.pricing-symbol {
+  font-size: 1.5rem;
+}
+.pricing-unit {
+  font-size: 1rem;
+  color: #555;
+}
+.pricing-features {
+  list-style: none;
+  padding: 0;
+}
+.pricing-features li {
+  margin: 5px 0;
+}
+.pricing-button {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 10px 15px;
+  background: #0171EB;
+  color: #fff;
+  border-radius: 5px;
+  text-decoration: none;
+}
+.pricing-button:hover {
+  background: #005BBB;
+}
+{% endstylesheet %}

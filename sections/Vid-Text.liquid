@@ -1,0 +1,162 @@
+{% comment %}
+Optimized Video + Text Section for Dawn
+- Supports MP4, WebM, YouTube, and Vimeo
+- Fully compatible with Dawn's JSON structure
+- Lightweight and fast
+{% endcomment %}
+
+<section class="split-video-text w-full py-16 px-6">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+        <!-- Video Section -->
+        <div class="video-container">
+            {% if section.settings.video_source == "upload" and section.settings.video_upload != blank %}
+                <video 
+                    class="w-full rounded-lg shadow-lg"
+                    {% if section.settings.enable_autoplay %} autoplay muted loop playsinline {% endif %}
+                    {% if section.settings.enable_controls %} controls {% endif %}
+                >
+                    <source src="{{ section.settings.video_upload }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            {% elsif section.settings.video_source == "external" and section.settings.video_link contains "youtube.com" or section.settings.video_link contains "vimeo.com" %}
+                <iframe 
+                    class="w-full rounded-lg shadow-lg"
+                    src="{{ section.settings.video_link | replace: 'watch?v=', 'embed/' }}"
+                    frameborder="0"
+                    allowfullscreen
+                ></iframe>
+            {% else %}
+                <p class="text-gray-500">No video available.</p>
+            {% endif %}
+        </div>
+
+        <!-- Text Section -->
+        <div class="text-content text-{{ section.settings.text_alignment }}">
+            <h2 class="text-4xl font-bold text-gray-900">
+                {{ section.settings.heading }}
+            </h2>
+            <p class="text-lg text-gray-600 mt-4">
+                {{ section.settings.text }}
+            </p>
+
+            <!-- Button -->
+            {% if section.settings.button_text != blank %}
+                <a href="{{ section.settings.button_link }}" class="mt-6 inline-block px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition">
+                    {{ section.settings.button_text }}
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- Styles Scoped to Prevent Conflicts -->
+<style>
+    .split-video-text {
+        background-color: #ffffff;
+    }
+    .video-container {
+        border-radius: {{ section.settings.video_section_radius }}px;
+    }
+    .text-content {
+        border-radius: {{ section.settings.text_section_radius }}px;
+    }
+</style>
+
+<!-- Shopify Schema for Customization -->
+{% schema %}
+{
+    "name": "Split Video + Text",
+    "class": "split-video-text",
+    "settings": [
+        {
+            "type": "text",
+            "id": "heading",
+            "label": "Heading",
+            "default": "See What's New"
+        },
+        {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text",
+            "default": "<p>Step into style and comfort. Experience unparalleled durability and elegance in one.</p>"
+        },
+        {
+            "type": "select",
+            "id": "video_source",
+            "label": "Video Source",
+            "default": "upload",
+            "options": [
+                { "value": "upload", "label": "Upload (MP4, WebM)" },
+                { "value": "external", "label": "External (YouTube/Vimeo)" }
+            ]
+        },
+        {
+            "type": "video",
+            "id": "video_upload",
+            "label": "Uploaded Video",
+            "info": "Upload an MP4 or WebM file."
+        },
+    
+        {
+            "type": "checkbox",
+            "id": "enable_autoplay",
+            "label": "Enable Autoplay",
+            "default": true
+        },
+        {
+            "type": "checkbox",
+            "id": "enable_controls",
+            "label": "Show Video Controls",
+            "default": false
+        },
+        {
+            "type": "text",
+            "id": "button_text",
+            "label": "Button Text",
+            "default": "Shop Now"
+        },
+        {
+            "type": "url",
+            "id": "button_link",
+            "label": "Button Link"
+        },
+        {
+            "type": "select",
+            "id": "text_alignment",
+            "label": "Text Alignment",
+            "default": "center",
+            "options": [
+                {"value": "left", "label": "Left"},
+                {"value": "center", "label": "Center"},
+                {"value": "right", "label": "Right"}
+            ]
+        },
+        {
+            "type": "range",
+            "id": "video_section_radius",
+            "label": "Video Border Radius",
+            "default": 10,
+            "min": 0,
+            "max": 50,
+            "step": 1,
+            "unit": "px"
+        },
+        {
+            "type": "range",
+            "id": "text_section_radius",
+            "label": "Text Border Radius",
+            "default": 10,
+            "min": 0,
+            "max": 50,
+            "step": 1,
+            "unit": "px"
+        }
+    ],
+    "presets": [
+        {
+            "name": "Split Video + Text",
+            "settings": {}
+        }
+    ]
+}
+{% endschema %}

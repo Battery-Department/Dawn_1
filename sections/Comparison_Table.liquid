@@ -1,0 +1,279 @@
+<!-- ============================================ -->
+<!--           Comparison Table for Dawn         -->
+<!-- ============================================ -->
+
+<section class="comparison-table section color-{{ section.settings.color_scheme }}">
+  <div class="page-width">
+    <div class="comparison-table__header text-center">
+      {% if section.settings.heading != blank %}
+        <h2 class="comparison-title">{{ section.settings.heading }}</h2>
+      {% endif %}
+      {% if section.settings.subheading != blank %}
+        <p class="comparison-subheading">{{ section.settings.subheading }}</p>
+      {% endif %}
+    </div>
+
+    <div class="comparison-table__wrapper">
+      <table class="comparison-table__grid">
+        <tr class="comparison-table__row">
+          <!-- Empty space for labels -->
+          <th class="comparison-table__empty"></th>
+
+          <!-- Store Logo or Label -->
+          <td class="comparison-table__label">
+            {% if section.settings.shop_logo != blank %}
+              <img src="{{ section.settings.shop_logo | image_url: width: 100 }}" alt="{{ section.settings.shop_label }}" class="comparison-logo" loading="lazy">
+            {% else %}
+              <span class="comparison-label">{{ section.settings.shop_label }}</span>
+            {% endif %}
+          </td>
+
+          <!-- Competitor Logo or Label -->
+          <td class="comparison-table__label">
+            {% if section.settings.competitor_logo != blank %}
+              <img src="{{ section.settings.competitor_logo | image_url: width: 100 }}" alt="{{ section.settings.competitor_label }}" class="comparison-logo" loading="lazy">
+            {% else %}
+              <span class="comparison-label">{{ section.settings.competitor_label }}</span>
+            {% endif %}
+          </td>
+        </tr>
+
+        <!-- Dynamic Feature Rows -->
+        {% for block in section.blocks %}
+          <tr class="comparison-table__row" id="comparison-row-{{ block.id }}">
+            <!-- Feature Name -->
+            <th class="comparison-feature">
+              {{ block.settings.label }}
+              {% if block.settings.subheading != blank %}
+                <div class="comparison-subtext">{{ block.settings.subheading }}</div>
+              {% endif %}
+            </th>
+
+            <!-- Store Feature -->
+            <td class="comparison-value">
+              {% if block.settings.enable_store %}
+                {% if block.settings.column_value_icon_1 != blank %}
+                  <img src="{{ block.settings.column_value_icon_1 | image_url: width: 50 }}" alt="Yes" class="comparison-icon" loading="lazy">
+                {% else %}
+                  ✅
+                {% endif %}
+              {% else %}
+                {% if block.settings.column_value_icon_2 != blank %}
+                  <img src="{{ block.settings.column_value_icon_2 | image_url: width: 50 }}" alt="No" class="comparison-icon" loading="lazy">
+                {% else %}
+                  ❌
+                {% endif %}
+              {% endif %}
+            </td>
+
+            <!-- Competitor Feature -->
+            <td class="comparison-value">
+              {% if block.settings.competitor %}
+                {% if block.settings.column_value_icon_1 != blank %}
+                  <img src="{{ block.settings.column_value_icon_1 | image_url: width: 50 }}" alt="Yes" class="comparison-icon" loading="lazy">
+                {% else %}
+                  ✅
+                {% endif %}
+              {% else %}
+                {% if block.settings.column_value_icon_2 != blank %}
+                  <img src="{{ block.settings.column_value_icon_2 | image_url: width: 50 }}" alt="No" class="comparison-icon" loading="lazy">
+                {% else %}
+                  ❌
+                {% endif %}
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+
+    {% if section.settings.button_text != blank %}
+      <div class="comparison-table__cta text-center">
+        <a href="{{ section.settings.button_link }}" class="comparison-button">
+          {{ section.settings.button_text }}
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- ======================================= -->
+<!--               CSS Styles                -->
+<!-- ======================================= -->
+{% style %}
+  .comparison-table {
+    padding: 60px 20px;
+    background: var(--background);
+    text-align: center;
+  }
+
+  .comparison-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .comparison-subheading {
+    font-size: 1rem;
+    color: var(--text-color);
+    margin-bottom: 20px;
+  }
+
+  .comparison-table__wrapper {
+    overflow-x: auto;
+  }
+
+  .comparison-table__grid {
+    width: 100%;
+    max-width: 800px;
+    margin: auto;
+    border-collapse: collapse;
+  }
+
+  .comparison-table__row th,
+  .comparison-table__row td {
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+  }
+
+  .comparison-label {
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+
+  .comparison-logo {
+    width: 80px;
+    height: auto;
+    margin: auto;
+  }
+
+  .comparison-feature {
+    font-weight: bold;
+    text-align: left;
+  }
+
+  .comparison-subtext {
+    font-size: 0.9rem;
+    color: var(--text-color);
+    margin-top: 5px;
+  }
+
+  .comparison-value {
+    font-size: 1.2rem;
+  }
+
+  .comparison-icon {
+    width: 25px;
+    height: 25px;
+  }
+
+  .comparison-button {
+    display: inline-block;
+    background: var(--primary);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 20px;
+    transition: 0.3s;
+  }
+
+  .comparison-button:hover {
+    background: darken(var(--primary), 10%);
+  }
+{% endstyle %}
+
+<!-- ======================================= -->
+<!--        Shopify Schema for Editor       -->
+<!-- ======================================= -->
+{% schema %}
+{
+  "name": "Comparison Table",
+  "class": "comparison-table",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Why Choose Us?"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "See how we compare to our competitors."
+    },
+    {
+      "type": "image_picker",
+      "id": "shop_logo",
+      "label": "Your Shop Logo"
+    },
+    {
+      "type": "text",
+      "id": "shop_label",
+      "label": "Your Shop Name",
+      "default": "Our Store"
+    },
+    {
+      "type": "image_picker",
+      "id": "competitor_logo",
+      "label": "Competitor Logo"
+    },
+    {
+      "type": "text",
+      "id": "competitor_label",
+      "label": "Competitor Name",
+      "default": "Competitor"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature Row",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Feature",
+          "default": "Feature Name"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_store",
+          "label": "Available in Store",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "competitor",
+          "label": "Available in Competitor",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Comparison Table",
+      "blocks": [
+        { "type": "feature" },
+        { "type": "feature" },
+        { "type": "feature" }
+      ]
+    }
+  ]
+}
+{% endschema %}
