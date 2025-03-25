@@ -1,0 +1,77 @@
+<!-- filepath: sections/react-section.liquid -->
+<div id="react-section-root">
+  {% for block in section.blocks %}
+    <div 
+      id="react-block-{{ block.id }}" 
+      data-props='{
+        "id": "{{ block.id }}",
+        "customHtml": "{{ block.settings.custom_html | escape }}",
+        "buttonText": "{{ block.settings.button_text | escape }}",
+        "animationType": "{{ block.settings.animation_type | escape }}",
+        "price": "{{ block.settings.price | escape }}",
+        "features": "{{ block.settings.features | escape }}",
+        "buttonLink": "{{ block.settings.button_link | escape }}"
+      }'>
+    </div>
+  {% endfor %}
+</div>
+
+{% schema %}
+{
+  "name": "React Section",
+  "blocks": [
+    {
+      "type": "react_block",
+      "name": "React Block",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "custom_html",
+          "label": "Custom HTML",
+          "default": "<h1>React Block</h1>"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "Learn More"
+        },
+        {
+          "type": "select",
+          "id": "animation_type",
+          "label": "Animation Type",
+          "options": [
+            { "value": "fade", "label": "Fade In" },
+            { "value": "slide", "label": "Slide In" },
+            { "value": "zoom", "label": "Zoom In" }
+          ],
+          "default": "fade"
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Price",
+          "default": "$49.99"
+        },
+        {
+          "type": "textarea",
+          "id": "features",
+          "label": "Features List",
+          "default": "<ul><li>Feature 1</li><li>Feature 2</li></ul>"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link",
+          "default": "#"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "React Section"
+    }
+  ]
+}
+{% endschema %}
