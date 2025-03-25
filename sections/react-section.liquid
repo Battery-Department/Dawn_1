@@ -5,12 +5,12 @@
       id="react-block-{{ block.id }}" 
       data-props='{
         "id": "{{ block.id }}",
-        "customHtml": "{{ block.settings.custom_html | escape }}",
-        "buttonText": "{{ block.settings.button_text | escape }}",
-        "animationType": "{{ block.settings.animation_type | escape }}",
-        "price": "{{ block.settings.price | escape }}",
-        "features": "{{ block.settings.features | escape }}",
-        "buttonLink": "{{ block.settings.button_link | escape }}"
+        "customHtml": {{ block.settings.custom_html | json }},
+        "buttonText": {{ block.settings.button_text | json }},
+        "animationType": {{ block.settings.animation_type | json }},
+        "price": {{ block.settings.price | json }},
+        "features": {{ block.settings.features | json }},
+        "buttonLink": {{ block.settings.button_link | json }}
       }'>
     </div>
   {% endfor %}
@@ -19,6 +19,7 @@
 {% schema %}
 {
   "name": "React Section",
+  "class": "section",
   "blocks": [
     {
       "type": "react_block",
