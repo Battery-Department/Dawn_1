@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client'; // Updated for React 18+
 import PropTypes from 'prop-types';
 
 class ReactBlock extends React.Component {
@@ -31,7 +31,7 @@ class ReactBlock extends React.Component {
     const { customHtml, buttonText, animationType, price, features } = this.props;
     const { isVisible } = this.state;
 
-    // Define animation styles
+    // Define animation styles with a fallback for invalid animationType
     const animationStyles = {
       fade: {
         opacity: isVisible ? 1 : 0,
@@ -49,8 +49,10 @@ class ReactBlock extends React.Component {
       },
     };
 
+    const style = animationStyles[animationType] || animationStyles.fade; // Fallback to 'fade'
+
     return (
-      <div style={animationStyles[animationType]} className="react-block">
+      <div style={style} className="react-block">
         {/* Render custom HTML */}
         <div dangerouslySetInnerHTML={{ __html: customHtml }} />
 
@@ -114,10 +116,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const blocks = document.querySelectorAll('[id^="react-block-"]');
   blocks.forEach((block) => {
     try {
+      if (!block.dataset.props) {
+        console.warn(`No data-props attribute found for block with ID: ${block.id}`);
+        return;
+      }
+
       const blockData = JSON.parse(block.dataset.props); // Parse props from data attribute
-      ReactDOM.render(<ReactBlock {...blockData} />, block);
+      const root = ReactDOM.createRoot(block); // Use ReactDOM.createRoot for React 18+
+      root.render(<ReactBlock {...blockData} />);
     } catch (error) {
-      console.error('Error parsing React block data:', error);
+      console.error(`Error parsing React block data for block with ID: ${block.id}`, error);
     }
   });
 });
