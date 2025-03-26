@@ -4,12 +4,9 @@
     <div 
       id="react-block-{{ block.id }}" 
       data-props='{
-        "id": "{{ block.id }}",
-        "customHtml": {{ block.settings.custom_html | json }},
+        "title": {{ block.settings.title | json }},
+        "description": {{ block.settings.description | json }},
         "buttonText": {{ block.settings.button_text | json }},
-        "animationType": {{ block.settings.animation_type | json }},
-        "price": {{ block.settings.price | json }},
-        "features": {{ block.settings.features | json }},
         "buttonLink": {{ block.settings.button_link | json }}
       }'>
     </div>
@@ -26,39 +23,22 @@
       "name": "React Block",
       "settings": [
         {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Default Title"
+        },
+        {
           "type": "textarea",
-          "id": "custom_html",
-          "label": "Custom HTML",
-          "default": "<h1>React Block</h1>"
+          "id": "description",
+          "label": "Description",
+          "default": "This is a simple React block."
         },
         {
           "type": "text",
           "id": "button_text",
           "label": "Button Text",
-          "default": "Learn More"
-        },
-        {
-          "type": "select",
-          "id": "animation_type",
-          "label": "Animation Type",
-          "options": [
-            { "value": "fade", "label": "Fade In" },
-            { "value": "slide", "label": "Slide In" },
-            { "value": "zoom", "label": "Zoom In" }
-          ],
-          "default": "fade"
-        },
-        {
-          "type": "text",
-          "id": "price",
-          "label": "Price",
-          "default": "$49.99"
-        },
-        {
-          "type": "textarea",
-          "id": "features",
-          "label": "Features List",
-          "default": "<ul><li>Feature 1</li><li>Feature 2</li></ul>"
+          "default": "Click Me"
         },
         {
           "type": "url",
