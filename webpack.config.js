@@ -3,7 +3,7 @@ const path = require('path');
 module.exports = {
   entry: './src/index.js',  // Entry point for your React app
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'assets'), // Output to the assets directory for Shopify
     filename: 'bundle.js',  // Output bundled file
   },
   module: {
@@ -18,6 +18,6 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.js', '.jsx'],  // Resolve .js and .jsx files
   },
 };

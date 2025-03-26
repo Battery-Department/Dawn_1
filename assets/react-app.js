@@ -1,3 +1,7 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
+
 class ReactBlock extends React.Component {
   constructor(props) {
     super(props);
@@ -15,10 +19,11 @@ class ReactBlock extends React.Component {
 
   handleButtonClick = () => {
     // Handle button click (e.g., navigate to a link or trigger an action)
-    if (this.props.buttonLink) {
-      window.location.href = this.props.buttonLink;
+    const { buttonLink, id } = this.props;
+    if (buttonLink) {
+      window.location.href = buttonLink;
     } else {
-      alert(`Button clicked in block: ${this.props.id}`);
+      alert(`Button clicked in block: ${id}`);
     }
   };
 
@@ -83,11 +88,36 @@ class ReactBlock extends React.Component {
   }
 }
 
+// Define PropTypes for validation
+ReactBlock.propTypes = {
+  id: PropTypes.string.isRequired,
+  customHtml: PropTypes.string,
+  buttonText: PropTypes.string,
+  animationType: PropTypes.oneOf(['fade', 'slide', 'zoom']),
+  price: PropTypes.string,
+  features: PropTypes.string,
+  buttonLink: PropTypes.string,
+};
+
+// Define default props
+ReactBlock.defaultProps = {
+  customHtml: '',
+  buttonText: 'Click Me',
+  animationType: 'fade',
+  price: '',
+  features: '',
+  buttonLink: null,
+};
+
 // Mount React components dynamically
 document.addEventListener('DOMContentLoaded', () => {
   const blocks = document.querySelectorAll('[id^="react-block-"]');
   blocks.forEach((block) => {
-    const blockData = JSON.parse(block.dataset.props); // Parse props from data attribute
-    ReactDOM.render(<ReactBlock {...blockData} />, block);
+    try {
+      const blockData = JSON.parse(block.dataset.props); // Parse props from data attribute
+      ReactDOM.render(<ReactBlock {...blockData} />, block);
+    } catch (error) {
+      console.error('Error parsing React block data:', error);
+    }
   });
 });

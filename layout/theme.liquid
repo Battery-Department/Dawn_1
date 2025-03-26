@@ -26,6 +26,7 @@
       <meta name="description" content="{{ page_description | escape }}">
     {% endif %}
 
+    <!-- Include React Bundle -->
     <script src="{{ 'bundle.js' | asset_url }}" defer="defer"></script>
 
     {% render 'meta-tags' %}
@@ -310,6 +311,9 @@
     {%- endif -%}
 
     {% sections 'header-group' %}
+
+    <!-- React Mounting Point -->
+    <div id="root"></div>
 
     <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
       {{ content_for_layout }}
